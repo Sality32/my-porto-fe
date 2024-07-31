@@ -32,8 +32,8 @@ jobs:
           port: ${{ secrets. VPS_PORT }}
           key: ${{ secrets.VPS_YOGA_SSH_SECRET }}
           script: |
-            cd /home/${{ secrets.VPS_USERNAME }}/your-app-name
+            cd /home/${{ secrets.VPS_USERNAME }}/my-porto-fe
             git pull origin main
             npm install --production
             npm run build
-            pm2 restart all || pm2 start npm --name "your-app-name" -- run start
+            pm2 restart all || pm2 start npm --name "my-porto" -- run start
