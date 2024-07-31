@@ -20,8 +20,8 @@ jobs:
 
       - name: Test SSH Connection
         run: |
-          ssh -o StrictHostKeyChecking=no user@vps-ip 'echo "SSH key works!"'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }} 'echo "SSH key works!"'
         
       - name: List files on VPS
         run: |
-          ssh -o StrictHostKeyChecking=no user@vps-ip 'ls -la'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }} 'ls -la'
