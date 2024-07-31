@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Test SSH Key
 
 on:
   push:
@@ -6,34 +6,22 @@ on:
       - master
 
 jobs:
-  build:
+  test-ssh:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
         with:
-          node-version: '18'
+          ssh-private-key: ${{ secrets.VPS_YOGA_SSH_SECRET }}
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run build
-        run: npm run build
-
-      - name: Deploy to VPS
-        uses: appleboy/ssh-action@v0.1.3
-        with:
-          host: ${{ secrets.VPS_IP }}
-          username: ${{ secrets.VPS_USERNAME }}
-          port: ${{ secrets. VPS_PORT }}
-          key: ${{ secrets.VPS_YOGA_SSH_SECRET }}
-          script: |
-            cd /home/${{ secrets.VPS_USERNAME }}/my-porto-fe
-            git pull origin main
-            npm install --production
-            npm run build
-            pm2 restart all || pm2 start npm --name "my-porto" -- run start
+      - name: Test SSH Connection
+        run: |
+          ssh -o StrictHostKeyChecking=no user@vps-ip 'echo "SSH key works!"'
+        
+      - name: List files on VPS
+        run: |
+          ssh -o StrictHostKeyChecking=no user@vps-ip 'ls -la'
