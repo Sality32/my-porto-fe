@@ -3,7 +3,7 @@ name: Test SSH Key
 on:
   push:
     branches:
-      - master
+      - dev
 
 jobs:
   test-ssh:
@@ -20,8 +20,8 @@ jobs:
 
       - name: Test SSH Connection
         run: |
-          ssh -o StrictHostKeyChecking=no yogasubagja@185.201.9.208 -p 9797 'echo "SSH key works!"'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }} -p ${{ secrets.VPS_PORT }} 'echo "SSH key works!"'
         
       - name: List files on VPS
         run: |
-          ssh -o StrictHostKeyChecking=no yogasubagja@185.201.9.208 -p 9797 'ls -la'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }} -p ${{ secrets.VPS_PORT }} 'ls -la'
